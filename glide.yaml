@@ -1,0 +1,11 @@
+package: github.com/smartmachine/crdb-operator-console
+import:
+  - package: k8s.io/client-go
+    version: v10.0.0
+  - package: github.com/smartmachine/crdb-operator
+    version: v1.3.4
+  - package: k8s.io/apimachinery
+    version: release-1.13
+  - package: github.com/gin-gonic/gin
+    version: v1.3.0
+
