@@ -8,4 +8,8 @@ import:
     version: release-1.13
   - package: github.com/gin-gonic/gin
     version: v1.3.0
+  - package: github.com/rakyll/statik
+    version: v0.1.6
+  - package: github.com/gorilla/websocket
+    version: v1.4.0
 
