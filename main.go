@@ -22,6 +22,8 @@ import (
 
 //go:generate statik -c "Console React Webapp" -Z -f -p webapp -src ../crdb-console/build
 
+var crdbClusters = &[]v1alpha1.CockroachDB{}
+
 func main() {
 	log.InitFlags(nil)
 
@@ -53,6 +55,8 @@ func main() {
 		log.Fatalf("Error looking up crdb clusters: %v", err.Error())
 	}
 
+	crdbClusters = &clusters.Items
+
 	for _, cluster := range clusters.Items {
 		log.Infof("Found cluster %s with nodes %+v", cluster.Name, cluster.Status.Nodes)
 	}
@@ -68,12 +72,8 @@ func main() {
 			log.Infof("Added new CockroachDB Cluster: %s", mObj.Name)
 		},
 		UpdateFunc: func(old interface{}, new interface{}) {
-			oldDB := old.(*v1alpha1.CockroachDB)
 			newDB := new.(*v1alpha1.CockroachDB)
-			if oldDB.ResourceVersion == newDB.ResourceVersion {
-				log.Infof("Received heartbeat event for CockroachDB Cluster: %s", newDB.Name)
-				return
-			}
+			log.Infof("Received update event for CockroachDB Cluster. Nodes: %v, Status: %s", newDB.Status.Nodes, newDB.Status.State)
 		},
 		DeleteFunc: func(obj interface{}) {
 			mObj := obj.(*v1alpha1.CockroachDB)
@@ -117,14 +117,22 @@ func wshandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = conn.WriteJSON(*crdbClusters)
+	if err != nil {
+		log.Errorf("Unable to send websocket message: ", err.Error())
+		return
+	}
+
 	for {
 		t, msg, err := conn.ReadMessage()
 		if err != nil {
 			break
 		}
-		err = conn.WriteMessage(t, msg)
-		if err != nil {
-			break
+		if t == websocket.BinaryMessage {
+			log.Info("Received a binary message, not logging it.")
+		}
+		if t == websocket.TextMessage {
+			log.Infof("Received a text message: %s", msg)
 		}
 	}
 }
