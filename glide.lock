@@ -1,5 +1,5 @@
-hash: 48f09549e51e59683015d24115bd2d0911faf30a2b276749bdfb5d9417af67f9
-updated: 2019-03-25T14:28:26.027322+01:00
+hash: 662494da15b48abd1183fd5ba6dc56f252691fc9b4b091d40ff499f450be9070
+updated: 2019-03-29T16:36:19.969607+01:00
 imports:
 - name: github.com/davecgh/go-spew
   version: 782f4967f2dc4564575ca782fe2d04090b5faca8
@@ -85,7 +85,7 @@ imports:
   subpackages:
   - fs
 - name: github.com/smartmachine/crdb-operator
-  version: 4de47bfa13c7cdf583e64a7448e95e467fe0ab73
+  version: cf0c8b0c706c04adc0f3e94f2cf46effac302617
   subpackages:
   - pkg/apis/db/v1alpha1
   - pkg/client/clientset/versioned
