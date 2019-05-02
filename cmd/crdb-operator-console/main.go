@@ -78,11 +78,11 @@ func OnMessageCallback(client *web.Client, message []byte) {
 		}
 		recordJSON, err := json.Marshal(record)
 		if err != nil {
-			log.Error("cannot marshal *Record to json: %v, %v", record, err)
+			log.Errorf("cannot marshal *Record to json: %v, %v", record, err)
 		}
 		client.Send <- recordJSON
 	default:
-		log.Error("unknown command type received: %s", cmd)
+		log.Errorf("unknown command type received: %s", cmd)
 
 	}
 }
@@ -97,4 +97,3 @@ func exitFunc(killChan ...chan struct{}) {
 	time.Sleep(time.Second * 5)
 	log.Infof("... Exiting.")
 }
-
